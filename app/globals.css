@@ -1,26 +1,247 @@
+/* ---------------------------------------- */
+/*           GOOGLE FONTS IMPORT            */
+/* ---------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ---------------------------------------- */
+/*              THEME VARIABLES             */
+/* ---------------------------------------- */
+@theme {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------------------------------------- */
+/*           DARK PURPLE ROOT TOKENS        */
+/* ---------------------------------------- */
+:root {
+  --background: oklch(3% 0.01 270);          /* hsl(0 0% 3%) */
+  --foreground: oklch(98% 0.00 270);         /* hsl(0 0% 98%) */
+
+  --card: oklch(17% 0.06 303);               /* hsl(260 30% 8%) */
+  --card-foreground: oklch(98% 0 270);
+
+  --popover: oklch(17% 0.06 303);
+  --popover-foreground: oklch(98% 0 270);
+
+  --primary: oklch(41.374% 0.22973 288.935);            /* hsl(262 83% 58%) */
+  --primary-foreground: oklch(100% 0 270);
+
+  --secondary: oklch(26% 0.03 300);          /* hsl(260 20% 15%) */
+  --secondary-foreground: oklch(98% 0 270);
+
+  --muted: oklch(26% 0.03 300);
+  --muted-foreground: oklch(72% 0.03 275);   /* hsl(240 5% 64%) */
+
+  --accent: oklch(73% 0.26 308);             /* hsl(262 83% 58%) */
+  --accent-foreground: oklch(100% 0 270);
+
+  --destructive: oklch(70% 0.18 28);         /* hsl(0 84% 60%) */
+  --destructive-foreground: oklch(98% 0 270);
+
+  --border: oklch(32% 0.03 300);             /* hsl(260 20% 18%) */
+  --input: oklch(32% 0.03 300);
+  --ring: oklch(67% 0.23 305);               /* hsl(262 83% 58%) */
+
+  --radius: 0.75rem;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    oklch(41.077% 0.21053 300.002),
+    oklch(39.69% 0.20425 303.545)
+  );
+
+  --gradient-secondary: linear-gradient(
+    135deg,
+    oklch(17% 0.06 303),
+    oklch(26% 0.03 300)
+  );
+
+  --gradient-hero: linear-gradient(
+    180deg,
+    oklch(67% 0.23 305 / 0.1) 0%,
+    oklch(3% 0.01 270) 100%
+  );
+
+  /* Shadows */
+  --shadow-glow: 0 0 40px oklch(67% 0.23 305 / 0.3);
+  --shadow-card: 0 10px 30px -10px oklch(67% 0.23 305 / 0.2);
+}
+
+
+/* ---------------------------------------- */
+/*               BASE STYLES                */
+/* ---------------------------------------- */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------------------------------------- */
+/*            COMPONENT STYLES              */
+/* ---------------------------------------- */
+@layer components {
+  .font-display {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .panel {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .pin-spacer {
+    height: 200vh;
+  }
+
+  .glass-card {
+    background-color: oklch(from var(--card) l c h / 0.5);
+    backdrop-filter: blur(24px);
+    border: 1px solid oklch(from var(--border) l c h / 0.5);
+  }
+}
+
+/* ---------------------------------------- */
+/*               UTILITIES                  */
+/* ---------------------------------------- */
+@layer utilities {
+
+  .gradient-text {
+    background-image: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-primary {
+    background-image: linear-gradient(
+      135deg,
+      oklch(26.694% 0.13081 304.659),
+      oklch(50% 0.22 300)
+    );
+  }
+
+  .bg-gradient-radial {
+    background-image: radial-gradient(
+      circle at center,
+      oklch(49.556% 0.25759 302.012 / 0.15),
+      transparent 90%
+    );
+  }
+
+  .bg-gradient-hero {
+    background-image: linear-gradient(
+      180deg,
+      oklch(60% 0.25 315 / 0.10) 0%,
+      oklch(3% 0.01 300) 100%
+    );
+  }
+
+  .hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @media (min-width: 640px) { .container { max-width: 640px; } }
+  @media (min-width: 768px) { .container { max-width: 768px; } }
+  @media (min-width: 1024px) { .container { max-width: 1024px; } }
+  @media (min-width: 1280px) { .container { max-width: 1280px; } }
+  @media (min-width: 1536px) { .container { max-width: 1400px; } }
+}
+
+/* ---------------------------------------- */
+/*          RESPONSIVE OVERRIDES            */
+/* ---------------------------------------- */
+@media (max-width: 640px) {
+  h1 { font-size: 2.5rem !important; }
+  h2 { font-size: 2rem !important; }
+  p { font-size: 1rem !important; }
+  .panel-title { font-size: 2rem !important; }
+  .panel-desc { font-size: 1rem !important; }
+}
+
+@media (max-width: 768px) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: auto;
+  }
 }
