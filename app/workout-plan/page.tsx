@@ -45,36 +45,106 @@ const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
 const setWorkoutPlan = useWorkoutStore((state) => state.setWorkoutPlan);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const { data, error } = await supabase.functions.invoke(
+  //       "generate-workout-plan",
+  //       {
+  //         body: formData,
+  //       }
+  //     );
+
+  //     if (error) throw error;
+
+  //     setWorkoutPlan(data.workoutDays);
+  //     toast({
+  //       title: "Workout Plan Generated!",
+  //       description: "Your personalized workout plan is ready.",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to generate workout plan. Please try again.",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "generate-workout-plan",
-        {
-          body: formData,
+        console.log("🚀 Sending request with data:", formData);
+        
+        const res = await fetch("/api/generate-workout-plan", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+
+        console.log("📡 Response status:", res.status);
+
+        let data;
+        try {
+            // CRITICAL FIX: Attempt to parse JSON
+            data = await res.json();
+            console.log("📦 Response data:", data);
+        } catch (jsonError) {
+            // If res.json() fails, it means the server didn't send JSON (e.g., crashed)
+            const errorText = await res.text();
+            console.error("❌ Failed to parse JSON. Raw response:", errorText);
+            throw new Error(`Server returned a non-JSON error (Status: ${res.status}).`);
         }
-      );
+        
+        // Ensure data is an object before reading properties (Defense)
+        if (!data || typeof data !== 'object') {
+            throw new Error(`Invalid response format received from server.`);
+        }
 
-      if (error) throw error;
+        if (!res.ok) {
+            // Now we safely access properties from the parsed 'data' object
+            const errorMessage = data.error || data.details || "Failed to generate workout plan";
+            console.error("❌ Server error:", errorMessage);
+            
+            throw new Error(errorMessage);
+        }
 
-      setWorkoutPlan(data.workoutDays);
-      toast({
-        title: "Workout Plan Generated!",
-        description: "Your personalized workout plan is ready.",
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to generate workout plan. Please try again.",
-        variant: "destructive",
-      });
+        // Validate the success response structure
+        if (!data.workoutDays || !Array.isArray(data.workoutDays)) {
+            console.error("❌ Invalid response structure:", data);
+            throw new Error("Invalid workout plan format received");
+        }
+
+        console.log("✅ Workout plan received:", data.workoutDays.length, "days");
+        setWorkoutPlan(data.workoutDays);
+
+        toast({
+            title: "Workout Plan Generated!",
+            description: "Your personalized workout plan is ready.",
+        });
+        
+    } catch (error: any) {
+        console.error("❌ Error details:", error);
+        
+        toast({
+            title: "Error",
+            description: error.message || "Failed to generate workout plan. Please try again.",
+            variant: "destructive",
+        });
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   const savePlan = () => {
     if (workoutPlan) {
