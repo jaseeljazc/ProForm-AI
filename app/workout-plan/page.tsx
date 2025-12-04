@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Link from "next/link";
 import { useWorkoutStore } from "@/store/workoutStore";
+import Workouts from "@/components/Workouts";
 
 interface WorkoutDay {
   day: string;
@@ -40,132 +41,84 @@ const WorkoutPlan = () => {
   });
   const [loading, setLoading] = useState(false);
 
-
-const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
-const setWorkoutPlan = useWorkoutStore((state) => state.setWorkoutPlan);
+  const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
+  const setWorkoutPlan = useWorkoutStore((state) => state.setWorkoutPlan);
   const { toast } = useToast();
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const { data, error } = await supabase.functions.invoke(
-  //       "generate-workout-plan",
-  //       {
-  //         body: formData,
-  //       }
-  //     );
-
-  //     if (error) throw error;
-
-  //     setWorkoutPlan(data.workoutDays);
-  //     toast({
-  //       title: "Workout Plan Generated!",
-  //       description: "Your personalized workout plan is ready.",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     toast({
-  //       title: "Error",
-  //       description: "Failed to generate workout plan. Please try again.",
-  //       variant: "destructive",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-        console.log("🚀 Sending request with data:", formData);
-        
-        const res = await fetch("/api/generate-workout-plan", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        });
+      console.log("🚀 Sending request with data:", formData);
 
-        console.log("📡 Response status:", res.status);
-
-        let data;
-        try {
-            // CRITICAL FIX: Attempt to parse JSON
-            data = await res.json();
-            console.log("📦 Response data:", data);
-        } catch (jsonError) {
-            // If res.json() fails, it means the server didn't send JSON (e.g., crashed)
-            const errorText = await res.text();
-            console.error("❌ Failed to parse JSON. Raw response:", errorText);
-            throw new Error(`Server returned a non-JSON error (Status: ${res.status}).`);
-        }
-        
-        // Ensure data is an object before reading properties (Defense)
-        if (!data || typeof data !== 'object') {
-            throw new Error(`Invalid response format received from server.`);
-        }
-
-        if (!res.ok) {
-            // Now we safely access properties from the parsed 'data' object
-            const errorMessage = data.error || data.details || "Failed to generate workout plan";
-            console.error("❌ Server error:", errorMessage);
-            
-            throw new Error(errorMessage);
-        }
-
-        // Validate the success response structure
-        if (!data.workoutDays || !Array.isArray(data.workoutDays)) {
-            console.error("❌ Invalid response structure:", data);
-            throw new Error("Invalid workout plan format received");
-        }
-
-        console.log("✅ Workout plan received:", data.workoutDays.length, "days");
-        setWorkoutPlan(data.workoutDays);
-
-        toast({
-            title: "Workout Plan Generated!",
-            description: "Your personalized workout plan is ready.",
-        });
-        
-    } catch (error: any) {
-        console.error("❌ Error details:", error);
-        
-        toast({
-            title: "Error",
-            description: error.message || "Failed to generate workout plan. Please try again.",
-            variant: "destructive",
-        });
-    } finally {
-        setLoading(false);
-    }
-};
-
-  const savePlan = () => {
-    if (workoutPlan) {
-      const savedPlans = JSON.parse(
-        localStorage.getItem("workoutPlans") || "[]"
-      );
-      savedPlans.push({
-        workoutDays: workoutPlan,
-        date: new Date().toISOString(),
+      const res = await fetch("/api/generate-workout-plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-      localStorage.setItem("workoutPlans", JSON.stringify(savedPlans));
+
+      console.log("📡 Response status:", res.status);
+
+      let data;
+      try {
+        // CRITICAL FIX: Attempt to parse JSON
+        data = await res.json();
+        console.log("📦 Response data:", data);
+      } catch (jsonError) {
+        // If res.json() fails, it means the server didn't send JSON (e.g., crashed)
+        const errorText = await res.text();
+        console.error("❌ Failed to parse JSON. Raw response:", errorText);
+        throw new Error(
+          `Server returned a non-JSON error (Status: ${res.status}).`
+        );
+      }
+
+      // Ensure data is an object before reading properties (Defense)
+      if (!data || typeof data !== "object") {
+        throw new Error(`Invalid response format received from server.`);
+      }
+
+      if (!res.ok) {
+        // Now we safely access properties from the parsed 'data' object
+        const errorMessage =
+          data.error || data.details || "Failed to generate workout plan";
+        console.error("❌ Server error:", errorMessage);
+
+        throw new Error(errorMessage);
+      }
+
+      // Validate the success response structure
+      if (!data.workoutDays || !Array.isArray(data.workoutDays)) {
+        console.error("❌ Invalid response structure:", data);
+        throw new Error("Invalid workout plan format received");
+      }
+
+      console.log("✅ Workout plan received:", data.workoutDays.length, "days");
+      setWorkoutPlan(data.workoutDays);
+
       toast({
-        title: "Saved!",
-        description: "Workout plan saved to your weekly overview.",
+        title: "Workout Plan Generated!",
+        description: "Your personalized workout plan is ready.",
       });
+    } catch (error: any) {
+      console.error("❌ Error details:", error);
+
+      toast({
+        title: "Error",
+        description:
+          error.message || "Failed to generate workout plan. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 text-center">
@@ -295,64 +248,11 @@ const handleSubmit = async (e: React.FormEvent) => {
                   </>
                 )}
               </Button>
-            </form>
+            </form> 
           </Card>
-
-          {workoutPlan && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="flex justify-end gap-4">
-                <Button
-                  onClick={() => handleSubmit(new Event("submit") as any)}
-                  variant="outline"
-                  disabled={loading}
-                >
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Regenerate
-                </Button>
-                <Button
-                  onClick={savePlan}
-                  className="bg-gradient-primary hover:opacity-90"
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Plan
-                </Button>
-              </div>
-
-              {workoutPlan.map((day, index) => (
-                <Card key={index} className="glass-card p-6">
-                  <h3 className="text-xl font-bold mb-4">{day.day}</h3>
-
-                  <div className="space-y-4">
-                    {day.exercises.map((exercise, idx) => (
-                      <Link
-                        href={`workout-plan/exercise/${encodeURIComponent(exercise.name)}`}
-                        key={idx}
-                        className="block"
-                      >
-                        <div className="p-4 rounded-lg bg-secondary/50 border border-border/50 hover:bg-secondary/70 transition">
-                          <div className="flex justify-between items-start mb-2">
-                            <h4 className="font-semibold">{exercise.name}</h4>
-                            <span className="text-sm text-muted-foreground">
-                              {exercise.sets} × {exercise.reps}
-                            </span>
-                          </div>
-
-                          {exercise.notes && (
-                            <p className="text-sm text-muted-foreground">
-                              {exercise.notes}
-                            </p>
-                          )}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
+          <Workouts handleSubmit={handleSubmit} loading={loading} />
         </div>
       </main>
-
     </div>
   );
 };

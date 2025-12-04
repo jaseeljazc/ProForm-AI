@@ -44,61 +44,61 @@
 }
 
 /* ---------------------------------------- */
-/*           DARK PURPLE ROOT TOKENS        */
+/*       PREMIUM DARK VIOLET TOKENS         */
 /* ---------------------------------------- */
 :root {
-  --background: oklch(3% 0.01 270);          /* hsl(0 0% 3%) */
-  --foreground: oklch(98% 0.00 270);         /* hsl(0 0% 98%) */
+  --background: oklch(6% 0.015 285);         /* Rich deep violet-black */
+  --foreground: oklch(98% 0.005 285);        /* Soft white with violet tint */
 
-  --card: oklch(17% 0.06 303);               /* hsl(260 30% 8%) */
-  --card-foreground: oklch(98% 0 270);
+  --card: oklch(11% 0.04 290);               /* Deep violet card */
+  --card-foreground: oklch(97% 0.008 285);
 
-  --popover: oklch(17% 0.06 303);
-  --popover-foreground: oklch(98% 0 270);
+  --popover: oklch(11% 0.04 290);
+  --popover-foreground: oklch(97% 0.008 285);
 
-  --primary: oklch(41.374% 0.22973 288.935);            /* hsl(262 83% 58%) */
-  --primary-foreground: oklch(100% 0 270);
+  --primary: oklch(65% 0.25 295);            /* Vibrant purple */
+  --primary-foreground: oklch(100% 0 0);
 
-  --secondary: oklch(26% 0.03 300);          /* hsl(260 20% 15%) */
-  --secondary-foreground: oklch(98% 0 270);
+  --secondary: oklch(20% 0.05 288);          /* Deep violet-gray */
+  --secondary-foreground: oklch(97% 0.008 285);
 
-  --muted: oklch(26% 0.03 300);
-  --muted-foreground: oklch(72% 0.03 275);   /* hsl(240 5% 64%) */
+  --muted: oklch(22% 0.04 288);
+  --muted-foreground: oklch(68% 0.03 285);   /* Muted violet-gray */
 
-  --accent: oklch(73% 0.26 308);             /* hsl(262 83% 58%) */
-  --accent-foreground: oklch(100% 0 270);
+  --accent: oklch(72% 0.28 305);             /* Brilliant violet */
+  --accent-foreground: oklch(100% 0 0);
 
-  --destructive: oklch(70% 0.18 28);         /* hsl(0 84% 60%) */
-  --destructive-foreground: oklch(98% 0 270);
+  --destructive: oklch(65% 0.22 15);         /* Elegant red */
+  --destructive-foreground: oklch(98% 0 0);
 
-  --border: oklch(32% 0.03 300);             /* hsl(260 20% 18%) */
-  --input: oklch(32% 0.03 300);
-  --ring: oklch(67% 0.23 305);               /* hsl(262 83% 58%) */
+  --border: oklch(28% 0.05 288);             /* Subtle violet border */
+  --input: oklch(28% 0.05 288);
+  --ring: oklch(68% 0.26 298);               /* Glowing violet ring */
 
-  --radius: 0.75rem;
+  --radius: 0.875rem;
 
   /* Gradients */
   --gradient-primary: linear-gradient(
     135deg,
-    oklch(41.077% 0.21053 300.002),
-    oklch(39.69% 0.20425 303.545)
+    oklch(62% 0.26 300),
+    oklch(58% 0.24 285)
   );
 
   --gradient-secondary: linear-gradient(
     135deg,
-    oklch(17% 0.06 303),
-    oklch(26% 0.03 300)
+    oklch(11% 0.04 290),
+    oklch(18% 0.06 295)
   );
 
   --gradient-hero: linear-gradient(
     180deg,
-    oklch(67% 0.23 305 / 0.1) 0%,
-    oklch(3% 0.01 270) 100%
+    oklch(68% 0.26 298 / 0.12) 0%,
+    oklch(6% 0.015 285) 100%
   );
 
   /* Shadows */
-  --shadow-glow: 0 0 40px oklch(67% 0.23 305 / 0.3);
-  --shadow-card: 0 10px 30px -10px oklch(67% 0.23 305 / 0.2);
+  --shadow-glow: 0 0 50px oklch(68% 0.26 298 / 0.35);
+  --shadow-card: 0 12px 40px -12px oklch(68% 0.26 298 / 0.25);
 }
 
 
