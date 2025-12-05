@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/select";
 import { Loader2, Sparkles, Save, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useWorkoutStore } from "@/store/workoutStore";
 import Workouts from "@/components/Workouts";
 

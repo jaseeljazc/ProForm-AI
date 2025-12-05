@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/select";
 import { Loader2, Sparkles, Save, RefreshCw, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 interface MealPlanData {
   breakfast: {
