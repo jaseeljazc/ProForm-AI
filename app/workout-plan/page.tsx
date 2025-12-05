@@ -43,6 +43,7 @@ const WorkoutPlan = () => {
 
   const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
   const setWorkoutPlan = useWorkoutStore((state) => state.setWorkoutPlan);
+  const setStoreFormData = useWorkoutStore((state) => state.setFormData);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,6 +99,7 @@ const WorkoutPlan = () => {
 
       console.log("✅ Workout plan received:", data.workoutDays.length, "days");
       setWorkoutPlan(data.workoutDays);
+      setStoreFormData(formData); // 👈 Save formData to Zustand store
 
       toast({
         title: "Workout Plan Generated!",

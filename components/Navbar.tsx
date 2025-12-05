@@ -4,6 +4,7 @@ import { Dumbbell, Home, UtensilsCrossed, Calendar, TrendingUp } from "lucide-re
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { IoBarbellSharp } from "react-icons/io5";
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
@@ -26,9 +27,9 @@ export const Navbar = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
               <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-primary">
-                <Dumbbell className="h-6 w-6 text-white" />
+                <IoBarbellSharp className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold gradient-text">FitMaster AI</span>
+              <span className="text-xl font-bold gradient-text">ProForm AI</span>
             </Link>
 
             {/* Desktop Menu */}
