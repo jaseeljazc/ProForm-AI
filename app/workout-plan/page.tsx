@@ -33,11 +33,11 @@ interface WorkoutDay {
 
 const WorkoutPlan = () => {
   const [formData, setFormData] = useState({
-    gender: "",
-    level: "",
-    goal: "",
-    days: "",
-    split: "",
+    gender: "male",
+    level: "beginner",
+    goal: "muscle-gain",
+    days: "5",
+    split: "push-pull-legs",
   });
   const [loading, setLoading] = useState(false);
 
@@ -122,7 +122,7 @@ const WorkoutPlan = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold mb-2">
+            <h1 className="text-5xl font-bold mb-2">
               AI Workout
               <span className="gradient-text"> Planner</span>
             </h1>
@@ -130,126 +130,131 @@ const WorkoutPlan = () => {
               Get a customized workout routine based on your goals
             </p>
           </div>
+          <div className="flex justify-center px-0">
+            <Card className="glass-card p-6 mb-8 md:min-w-xl">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="gender">Gender</Label>
+                    <Select
+                      value={formData.gender}
+                      onValueChange={(value: string) =>
+                        setFormData({ ...formData, gender: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="level">Fitness Level</Label>
+                    <Select
+                      value={formData.level}
+                      onValueChange={(value: string) =>
+                        setFormData({ ...formData, level: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="beginner">Beginner</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate
+                        </SelectItem>
+                        <SelectItem value="advanced">Advanced</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="goal">Goal</Label>
+                    <Select
+                      value={formData.goal}
+                      onValueChange={(value: string) =>
+                        setFormData({ ...formData, goal: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select goal" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="muscle-gain">Muscle Gain</SelectItem>
+                        <SelectItem value="weight-loss">Weight Loss</SelectItem>
+                        <SelectItem value="strength">Strength</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="days">Days Per Week</Label>
+                    <Select
+                      value={formData.days}
+                      onValueChange={(value: string) =>
+                        setFormData({ ...formData, days: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select days" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="3">3 Days</SelectItem>
+                        <SelectItem value="4">4 Days</SelectItem>
+                        <SelectItem value="5">5 Days</SelectItem>
+                        <SelectItem value="6">6 Days</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="split">Body Focus</Label>
+                    <Select
+                      value={formData.split}
+                      onValueChange={(value: string) =>
+                        setFormData({ ...formData, split: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select split" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bro-split">Bro Split</SelectItem>
+                        <SelectItem value="full-body">Full Body</SelectItem>
+                        <SelectItem value="upper-lower">
+                          Upper/Lower Split
+                        </SelectItem>
+                        <SelectItem value="push-pull-legs">
+                          Push/Pull/Legs
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-          <Card className="glass-card p-6 mb-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="gender">Gender</Label>
-                  <Select
-                    value={formData.gender}
-                    onValueChange={(value: string) =>
-                      setFormData({ ...formData, gender: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select gender" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="level">Fitness Level</Label>
-                  <Select
-                    value={formData.level}
-                    onValueChange={(value: string) =>
-                      setFormData({ ...formData, level: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="beginner">Beginner</SelectItem>
-                      <SelectItem value="intermediate">Intermediate</SelectItem>
-                      <SelectItem value="advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="goal">Goal</Label>
-                  <Select
-                    value={formData.goal}
-                    onValueChange={(value: string) =>
-                      setFormData({ ...formData, goal: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select goal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="muscle-gain">Muscle Gain</SelectItem>
-                      <SelectItem value="weight-loss">Weight Loss</SelectItem>
-                      <SelectItem value="strength">Strength</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="days">Days Per Week</Label>
-                  <Select
-                    value={formData.days}
-                    onValueChange={(value: string) =>
-                      setFormData({ ...formData, days: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select days" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="3">3 Days</SelectItem>
-                      <SelectItem value="4">4 Days</SelectItem>
-                      <SelectItem value="5">5 Days</SelectItem>
-                      <SelectItem value="6">6 Days</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="split">Body Focus</Label>
-                  <Select
-                    value={formData.split}
-                    onValueChange={(value: string) =>
-                      setFormData({ ...formData, split: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select split" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="full-body">Full Body</SelectItem>
-                      <SelectItem value="upper-lower">
-                        Upper/Lower Split
-                      </SelectItem>
-                      <SelectItem value="push-pull-legs">
-                        Push/Pull/Legs
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-primary hover:opacity-90"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      Generate Workout Plan
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Card>
+          </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-primary hover:opacity-90"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Generate Workout Plan
-                  </>
-                )}
-              </Button>
-            </form> 
-          </Card>
           <Workouts handleSubmit={handleSubmit} loading={loading} />
         </div>
       </main>

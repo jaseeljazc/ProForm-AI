@@ -61,11 +61,43 @@ export async function POST(req: Request) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const prompt = `
+// ------------------------------
+// BRO SPLIT DAY GENERATOR
+// ------------------------------
+
+let broSplitDays = ["Chest", "Back", "Shoulders", "Arms", "Legs"];
+
+// If user selects more than 5 days → repeat cycle (Chest 2, Back 2...)
+if (numDays > 5) {
+  const extraDays = numDays - 5;
+  for (let i = 0; i < extraDays; i++) {
+    broSplitDays.push(broSplitDays[i] + " 2");
+  }
+}
+
+// Slice to required number of days
+broSplitDays = broSplitDays.slice(0, numDays);
+
+
+// --------------------------------
+// SET dayLabels based on split
+// --------------------------------
+let finalDayLabels = dayLabels; // default
+
+if (split === "bro-split") {
+  finalDayLabels = broSplitDays;
+}
+
+
+// --------------------------------
+// FINAL PROMPT
+// --------------------------------
+
+const prompt = `
 You generate a ${numDays}-day ${split} workout plan.
 
 DAYS TO GENERATE:
-${dayLabels.map((day, i) => `Day ${i + 1} - ${day}`).join("\n")}
+${finalDayLabels.map((day, i) => `Day ${i + 1} - ${day}`).join("\n")}
 
 STRICT RULES:
 1. ONLY choose exercise names from this list (use EXACT names):
@@ -87,6 +119,14 @@ ${JSON.stringify(validNames)}
    - SHOULDERS: overhead press, lateral raises, rear delts etc
    - ARMS: biceps curls, triceps extensions etc
 
+   - **BRO SPLIT:**
+     - Day 1: Chest
+     - Day 2: Back
+     - Day 3: Shoulders
+     - Day 4: Arms (biceps + triceps)
+     - Day 5: Legs
+     - If days > 5 → repeat cycle (Chest 2, Back 2, etc)
+
 5. Match EXACT exercise names from the provided list (case-sensitive).
 
 6. Adjust difficulty based on level: "${level}"
@@ -100,16 +140,16 @@ ${JSON.stringify(validNames)}
    - endurance: Higher reps (12-15+)
    - fat-loss: Circuit-style, supersets
 
-8. Return PURE JSON ONLY (no markdown, no code blocks, no explanations).
+8. Return PURE JSON ONLY (no markdown, no comments, no explanation).
 
 Format:
 {
   "workoutDays": [
     {
-      "day": "Day 1 - Push",
+      "day": "Day 1 - Chest",
       "exercises": [
         { "name": "barbell bench press", "sets": 4, "reps": "8-12" },
-        { "name": "overhead press", "sets": 3, "reps": "10-12" }
+        { "name": "incline dumbbell press", "sets": 4, "reps": "8-12" }
       ]
     }
   ]
@@ -122,6 +162,7 @@ User Profile:
 - Days per week: ${days}
 - Split type: ${split}
 `;
+
 
     const result = await model.generateContent(prompt);
     const rawText = result.response.text();

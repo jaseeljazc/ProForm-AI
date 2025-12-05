@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Exercise {
   name: string;
@@ -18,8 +19,15 @@ interface WorkoutStore {
   clearWorkoutPlan: () => void;
 }
 
-export const useWorkoutStore = create<WorkoutStore>((set) => ({
-  workoutPlan: null,
-  setWorkoutPlan: (plan) => set({ workoutPlan: plan }),
-  clearWorkoutPlan: () => set({ workoutPlan: null }),
-}));
+export const useWorkoutStore = create<WorkoutStore>()(
+  persist(
+    (set) => ({
+      workoutPlan: null,
+      setWorkoutPlan: (plan) => set({ workoutPlan: plan }),
+      clearWorkoutPlan: () => set({ workoutPlan: null }),
+    }),
+    {
+      name: "workout-plan-storage", // key for localStorage
+    }
+  )
+);
