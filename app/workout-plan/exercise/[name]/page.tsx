@@ -1,10 +1,12 @@
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { Button } from '@/components/ui/button';
-import { RefreshCw, Save, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+"use client";
+
+import Link from "next/link";
+import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { useWorkoutStore } from "@/store/workoutStore";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, Save, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 type WorkoutsProps = {
   handleSubmit: (e: React.FormEvent) => void | Promise<void>;
@@ -14,12 +16,14 @@ type WorkoutsProps = {
 const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
   const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
   const formData = useWorkoutStore((state) => state.formData); // 👈 ADD THIS
-  
+
   const [navLoading, setNavLoading] = useState(false);
 
   const savePlan = () => {
     if (workoutPlan) {
-      const savedPlans = JSON.parse(localStorage.getItem("workoutPlans") || "[]");
+      const savedPlans = JSON.parse(
+        localStorage.getItem("workoutPlans") || "[]"
+      );
       savedPlans.push({
         workoutDays: workoutPlan,
         date: new Date().toISOString(),
@@ -41,7 +45,6 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
 
   return (
     <div className="relative">
-
       {/* 🔥 FULL SCREEN LOADING OVERLAY */}
       {navLoading && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
@@ -51,7 +54,6 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
 
       {workoutPlan && (
         <div className="space-y-6 animate-fade-in">
-
           {/* ACTION BUTTONS */}
           <div className="flex justify-end gap-4">
             <Button
