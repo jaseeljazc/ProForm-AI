@@ -64,37 +64,58 @@ const MealPlan = () => {
   const [showSaveAlert, setShowSaveAlert] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e?: any) => {
-    if (e) e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e?: any, debug = false) => {
+  if (e) e.preventDefault();
+  setLoading(true);
 
-    try {
-      const { data, error } = await supabase.functions.invoke(
-        "generate-meal-plan",
-        {
-          body: formData,
-        }
-      );
+  try {
+    const url = debug ? "/api/generate-meal-plan?debug=true" : "/api/generate-meal-plan";
+    
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (error) throw error;
+    const data = await response.json();
 
-      setMealPlan(data);
+    // Handle rate limit errors
+    if (response.status === 429) {
+      const retryAfter = data.retryAfter || 60;
       toast({
-        title: "Meal Plan Generated!",
-        description: "Your personalized meal plan is ready.",
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to generate meal plan. Please try again.",
+        title: "Rate Limit Reached",
+        description: `Please wait ${retryAfter} seconds and try again.`,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
 
+    if (!response.ok) {
+      throw new Error(data.error || `HTTP error! status: ${response.status}`);
+    }
+
+    // Remove metadata fields before setting meal plan
+    const { source, fetchedAt, ...mealPlanData } = data;
+    
+    setMealPlan(mealPlanData);
+    
+    toast({
+      title: "Meal Plan Generated!",
+      description: `Your personalized meal plan is ready${source === "cache" ? " (from cache)" : ""}.`,
+    });
+  } catch (error) {
+    console.error("Error generating meal plan:", error);
+    toast({
+      title: "Error",
+      description: error instanceof Error ? error.message : "Failed to generate meal plan. Please try again.",
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
   const savePlan = () => {
     if (mealPlan) {
       const mealDays = Object.entries(mealPlan)
