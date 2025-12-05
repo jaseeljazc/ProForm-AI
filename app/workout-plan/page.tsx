@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -17,7 +15,6 @@ import {
 import { Loader2, Sparkles, Save, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import Link from "next/link";
 import { useWorkoutStore } from "@/store/workoutStore";
 import Workouts from "@/components/Workouts";
 
