@@ -15,7 +15,7 @@ import {
 import { Loader2, Sparkles, Save, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useWorkoutStore } from "@/store/workoutStore";
-import Workouts from "@/components/Workouts";
+import GeneratedWorkouts from "@/components/GeneratedWorkouts";
 
 interface WorkoutDay {
   day: string;
@@ -253,7 +253,7 @@ const WorkoutPlan = () => {
             </Card>
           </div>
 
-          <Workouts handleSubmit={handleSubmit} loading={loading} />
+          <GeneratedWorkouts handleSubmit={handleSubmit} loading={loading} />
         </div>
       </main>
     </div>

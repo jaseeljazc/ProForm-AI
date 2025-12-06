@@ -1,25 +1,31 @@
-'use client'
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { Card } from './ui/card';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { Button } from './ui/button';
-import { RefreshCw, Save, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+"use client";
+import Link from "next/link";
+import React, { useState } from "react";
+import { Card } from "./ui/card";
+import { useWorkoutStore } from "@/store/workoutStore";
+import { Button } from "./ui/button";
+import { RefreshCw, Save, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type WorkoutsProps = {
   handleSubmit: (e: React.FormEvent) => void | Promise<void>;
   loading: boolean;
 };
 
-const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
+const GeneratedWorkouts: React.FC<WorkoutsProps> = ({
+  handleSubmit,
+  loading,
+}) => {
   const workoutPlan = useWorkoutStore((state) => state.workoutPlan);
 
   const [navLoading, setNavLoading] = useState(false);
 
   const savePlan = () => {
     if (workoutPlan) {
-      const savedPlans = JSON.parse(localStorage.getItem("workoutPlans") || "[]");
+      const savedPlans = JSON.parse(
+        localStorage.getItem("workoutPlans") || "[]"
+      );
       savedPlans.push({
         workoutDays: workoutPlan,
         date: new Date().toISOString(),
@@ -32,15 +38,16 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
     }
   };
 
+  const router = useRouter();
+
   const handleNavigate = async (href: string) => {
     setNavLoading(true);
-    await new Promise((res) => setTimeout(res, 400)); // small delay for smooth feel
-    window.location.href = href;
+    await new Promise((res) => setTimeout(res, 400));
+    router.push(href); // 👈 REAL NEXT.JS NAVIGATION
   };
 
   return (
     <div className="relative">
-
       {/* 🔥 FULL SCREEN LOADING OVERLAY */}
       {navLoading && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
@@ -50,7 +57,6 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
 
       {workoutPlan && (
         <div className="space-y-6 animate-fade-in">
-
           {/* ACTION BUTTONS */}
           <div className="flex justify-end gap-4">
             <Button
@@ -81,7 +87,7 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
                   <div
                     key={idx}
                     onClick={() =>
-                      handleNavigate(`/workout-plan/exercise/${exercise.name}`)
+                      handleNavigate(`/workout-plan/${exercise.name}`)
                     }
                     className="cursor-pointer p-4 rounded-lg bg-secondary/50 border border-border/50 hover:bg-secondary/70 transition mb-5"
                   >
@@ -108,4 +114,4 @@ const Workouts: React.FC<WorkoutsProps> = ({ handleSubmit, loading }) => {
   );
 };
 
-export default Workouts;
+export default GeneratedWorkouts;

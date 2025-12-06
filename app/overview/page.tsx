@@ -343,7 +343,7 @@ const Overview = () => {
                                         className="cursor-pointer hover:text-primary transition-colors"
                                         onClick={() =>
                                           handleNavigate(
-                                            `/workout-plan/exercise/${exercise.name}`,
+                                            `/workout-plan/${exercise.name}`,
                                             exercise.name
                                           )
                                         }
