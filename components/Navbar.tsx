@@ -63,7 +63,7 @@ export const Navbar = () => {
       {/* Mobile Top Bar - Logo Only */}
       <nav className="md:hidden sticky top-0 z-50 w-full border-b border-transparent bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-center">
+          <div className="flex h-16 items-center">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-primary">
                 <Dumbbell className="h-6 w-6 text-white" />
@@ -100,8 +100,7 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      {/* Spacer for mobile bottom nav */}
-      <div className="md:hidden h-20" />
+   
     </>
   );
 };

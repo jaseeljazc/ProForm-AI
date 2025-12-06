@@ -129,7 +129,7 @@ const WorkoutPlan = () => {
             </p>
           </div>
           <div className="flex justify-center px-0">
-            <Card className="glass-card p-6 mb-8 md:min-w-xl">
+<Card className="glass-card p-6 mb-8 max-w-xl w-full">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>

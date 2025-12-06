@@ -139,7 +139,7 @@ const Overview = () => {
               <div className="p-2 rounded-lg bg-primary/10">
                 <UtensilsCrossed className="h-6 w-6 text-primary" />
               </div>
-              <h2 className="text-3xl font-bold">Meal Plans</h2>
+              <h3 className="text-2xl font-bold">Meal Plans</h3>
               <span className="ml-auto text-sm text-muted-foreground bg-secondary px-3 py-1 rounded-full">
                 {mealPlans.length} saved
               </span>
@@ -242,7 +242,7 @@ const Overview = () => {
               <div className="p-2 rounded-lg bg-primary/10">
                 <Dumbbell className="h-6 w-6 text-primary" />
               </div>
-              <h2 className="text-3xl font-bold">Workout Plans</h2>
+              <h3 className="text-2xl font-bold">Workout Plans</h3>
               <span className="ml-auto text-sm text-muted-foreground bg-secondary px-3 py-1 rounded-full">
                 {workoutPlans.length} saved
               </span>
