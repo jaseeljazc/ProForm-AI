@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     // Gemini Setup
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 You are a professional nutritionist AI. Generate a complete daily meal plan with exact macros.
